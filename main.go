@@ -66,29 +66,36 @@ func main() {
             filename = userFilename + extension
         }
 
-        go func(url string, filename string) {
-            response, err := http.Get(url)
-            if err != nil {
-                fmt.Println("==============================================")
-                fmt.Println("Error when download a file > ")
-                fmt.Println(err)
-                fmt.Println("==============================================")
-                return
-            }
-            defer response.Body.Close()
+        fmt.Println("Downloading........")
+        response, err = http.Get(in)
+        if err != nil {
+            fmt.Println("==============================================")
+            fmt.Println("Error when download a file > ")
+            fmt.Println(err)
+            fmt.Println("==============================================")
+            return
+        }
+        defer response.Body.Close()
 
-            file, err := os.Create(filename)
-            if err != nil {
-                fmt.Println("==============================================")
-                fmt.Println("Error when download a file > ")
-                fmt.Println(err)
-                fmt.Println("==============================================")
-                return
-            }
-            defer file.Close()
+        file, err := os.Create(filename)
+        if err != nil {
+            fmt.Println("==============================================")
+            fmt.Println("Error when download a file > ")
+            fmt.Println(err)
+            fmt.Println("==============================================")
+            return
+        }
+        defer file.Close()
 
-            _, err = io.Copy(file, response.Body)
-        }(in, filename)
-        
+        _, err = io.Copy(file, response.Body)
+        if err != nil {
+            fmt.Println("==============================================")
+            fmt.Println("Error when download a file > ")
+            fmt.Println(err)
+            fmt.Println("==============================================")
+            return
+        }
+
+        fmt.Println("Finished.....")
     }
 }
